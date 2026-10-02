@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#17131c">
+  <link rel="icon" href="data:,">
+  <title>Brainlight · 视觉脑图谱</title>
+  <link rel="stylesheet" href="css/brainlight.css">
+</head>
+<body class="brainlight-app">
+  <main class="app-shell">
+    <header class="brand">
+      <p class="eyebrow">AN INTERACTIVE VISUAL ATLAS</p>
+      <h1>Brainlight<span aria-hidden="true">.</span></h1>
+      <p class="brand-description">从光线到辨认，探索我们如何看见。<br>拖动旋转，滚动缩放，点击脑区了解更多。</p>
+      <span class="edition-badge">视觉专辑 · 文献支持</span>
+    </header>
+
+    <nav class="toolbar" aria-label="三维脑模型控制">
+      <div class="view-controls tool-group" aria-label="标准视角">
+        <button type="button" data-view="left" class="is-active" aria-pressed="true">左侧</button>
+        <button type="button" data-view="front" aria-pressed="false">正面</button>
+        <button type="button" data-view="right" aria-pressed="false">右侧</button>
+        <button type="button" data-view="top" aria-pressed="false">顶部</button>
+        <button type="button" data-view="bottom" aria-pressed="false">底部</button>
+        <button type="button" data-view="back" aria-pressed="false">后方</button>
+        <button type="button" id="reset-view" title="重置视角和缩放" aria-label="重置视角和缩放">↺</button>
+      </div>
+      <div class="tool-group cortex-control">
+        <label for="cortex-opacity">皮层</label>
+        <input id="cortex-opacity" type="range" min="15" max="100" value="100" aria-label="皮层不透明度">
+        <button type="button" id="inside-toggle" aria-pressed="false">看内侧</button>
+      </div>
+      <div class="tool-group toggle-controls">
+        <button type="button" id="lobe-toggle" role="switch" aria-checked="false"><span class="switch-track" aria-hidden="true"></span>脑叶着色</button>
+        <button type="button" id="labels-toggle" role="switch" aria-checked="true"><span class="switch-track" aria-hidden="true"></span>标签</button>
+      </div>
+    </nav>
+
+    <aside class="stimulus-panel panel" aria-label="视觉场景">
+      <div class="panel-header"><h2>视觉场景</h2><span>从看见，到理解</span></div>
+      <div id="scenario-list" aria-label="选择视觉场景"></div>
+      <section class="scenario-detail" aria-labelledby="scenario-title">
+        <div class="section-eyebrow">正在探索</div>
+        <h2 id="scenario-title"></h2>
+        <p id="scenario-subtitle" class="scenario-subtitle"></p>
+        <p id="scenario-description" class="scenario-description"></p>
+        <ol id="step-list" aria-label="功能关联演示步骤"></ol>
+        <div id="scenario-evidence" class="evidence-block"></div>
+      </section>
+    </aside>
+
+    <section class="viewport-wrap" aria-label="交互式三维皮层模型">
+      <div class="lobe-legend" id="lobe-legend" aria-label="脑叶颜色图例" hidden></div>
+      <div id="brain-viewport" tabindex="0" aria-label="脑模型；可用顶部按钮切换视角，或在右侧索引选择脑区"></div>
+      <div id="brain-labels" aria-label="模型上的脑区标签"></div>
+      <div id="brain-tooltip" role="tooltip" hidden><strong class="tooltip-title"></strong><span class="tooltip-meta"></span></div>
+      <div id="loading-state" role="status"><span class="loading-spinner" aria-hidden="true"></span><p>正在展开视觉的世界…</p><small>加载本地皮层表面与解剖标签</small></div>
+      <div id="viewport-error" role="alert" hidden><h2>三维模型暂未载入</h2><p></p><button type="button" id="retry-load">重新加载</button></div>
+      <div class="viewport-caption"><span class="status-dot" aria-hidden="true"></span><span id="model-status">真实皮层表面 · BrainBrowser</span><span class="gesture-hint">拖动旋转 · 滚动缩放</span></div>
+      <p class="method-note">高亮为解剖分区上的功能关联示意；动画不表示真实时序或纤维通路。<button type="button" id="sources-open">文献与模型说明 ↗</button></p>
+    </section>
+
+    <aside class="region-panel panel" aria-label="脑区索引与详情">
+      <div class="panel-header"><h2>脑区</h2><span id="region-panel-hint">点击模型，深入了解</span></div>
+      <div id="region-index"><p class="index-intro">视觉由多个区域协同完成。选择一个区域，查看它的作用与研究依据。</p><div id="region-groups"></div><p class="index-footnote">索引仅列出本演示使用的视觉相关区域，保留完整皮层作为空间参照。</p></div>
+      <section id="region-detail" hidden aria-labelledby="region-name">
+        <button type="button" id="back-to-index">← 全部脑区</button>
+        <p class="region-kicker" id="region-kicker"></p>
+        <h2 id="region-name"></h2>
+        <p id="region-english" class="region-english"></p>
+        <div class="detail-actions"><button type="button" id="fly-to-region">定位此区 ↗</button><button type="button" id="switch-hemisphere">查看右侧</button></div>
+        <p id="region-summary"></p>
+        <div class="detail-section"><h3>相关视觉研究</h3><ul id="region-functions"></ul></div>
+        <div class="detail-note"><h3>如何理解这个位置</h3><p id="region-note"></p></div>
+        <div id="region-evidence" class="evidence-block"></div>
+        <div class="detail-section"><h3>在场景中探索</h3><div id="related-scenarios" class="related-scenarios"></div></div>
+      </section>
+    </aside>
+
+    <footer class="playback-bar" aria-label="演示播放控制">
+      <button type="button" id="play-toggle" disabled><span aria-hidden="true">▶</span> 播放</button>
+      <label class="sr-only" for="progress">演示进度</label><input id="progress" type="range" min="0" max="1000" step="1" value="0" disabled>
+      <output id="progress-readout" for="progress">0%</output>
+      <label class="sr-only" for="speed-select">播放速度</label><select id="speed-select"><option value="0.5" selected>½ 倍速</option><option value="1">1 倍速</option><option value="2">2 倍速</option></select>
+      <div class="activity-key"><span>示意</span><i aria-hidden="true"></i><span>强调</span></div>
+    </footer>
+  </main>
+
+  <dialog id="sources-dialog" aria-labelledby="sources-title">
+    <div class="sources-content">
+      <button type="button" class="dialog-close" id="sources-close" aria-label="关闭文献与模型说明">×</button>
+      <p class="eyebrow">EVIDENCE &amp; INTERPRETATION</p><h2 id="sources-title">文献与模型说明</h2>
+      <p>本演示只讨论视觉。下列论文支持对应区域与视觉任务的功能关联；场景步骤是阅读顺序，不是由论文测得的神经信号传播顺序。</p>
+      <div class="detail-note"><h3>模型能表达什么</h3><p>皮层表面和解剖标签来自 BrainBrowser 仓库自带数据。解剖分区不能精确界定 FFA、VWFA、hMT+ 或 PPA 等功能区域；高亮仅提供空间参照，不能用于个体定位。该模型不包含视网膜、丘脑、小脑或其他深部结构。</p></div>
+      <div id="sources-list"></div>
+    </div>
+  </dialog>
+
+  <script src="js/pako.js"></script>
+  <script src="js/brainbrowser/brainbrowser.js"></script>
+  <script src="js/brainbrowser/core/tree-store.js"></script>
+  <script src="js/brainbrowser/lib/config.js"></script>
+  <script src="js/brainbrowser/lib/utils.js"></script>
+  <script src="js/brainbrowser/lib/events.js"></script>
+  <script src="js/brainbrowser/lib/loader.js"></script>
+  <script src="js/brainbrowser/lib/color-map.js"></script>
+  <script src="js/brainbrowser/surface-viewer.js"></script>
+  <script src="js/brainbrowser/surface-viewer/lib/three.js"></script>
+  <script src="js/brainbrowser/surface-viewer/lib/parse-intensity-data.js"></script>
+  <script src="js/brainbrowser/surface-viewer/modules/annotations.js"></script>
+  <script src="js/brainbrowser/surface-viewer/modules/color.js"></script>
+  <script src="js/brainbrowser/surface-viewer/modules/loading.js"></script>
+  <script src="js/brainbrowser/surface-viewer/modules/rendering.js"></script>
+  <script src="js/brainbrowser/surface-viewer/modules/views.js"></script>
+  <script src="js/brainlight-data.js"></script>
+  <script src="js/brainlight-renderer.js"></script>
+  <script src="js/brainlight.js"></script>
+</body>
+</html>
