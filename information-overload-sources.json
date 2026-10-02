@@ -1,0 +1,531 @@
+{
+  "reviewDateLocal": "2026-10-03",
+  "timezone": "Asia/Shanghai",
+  "recordedAtUTC": "2026-10-02T16:27:13.875998+00:00",
+  "scope": "Verification of the 14 already selected classic references; not a systematic review or a search of recent literature.",
+  "summary": {
+    "metadataVerified": 14,
+    "abstractsReviewed": 12,
+    "fullTextsReviewed": 0
+  },
+  "limitations": [
+    "Metadata verification is not content validation.",
+    "Twelve Europe PMC abstractText records were read; no complete article was reviewed.",
+    "Eppler 2004 and Desimone 1995 had no abstract in the queried APIs; their conceptual summaries were not independently rechecked against article text in this pass.",
+    "Five Europe PMC fullTextXML requests returned HTTP 500. Publisher and PMC page requests were blocked; these responses were not treated as article content."
+  ],
+  "sources": [
+    {
+      "id": "eppler2004",
+      "doi": "10.1080/01972240490507974",
+      "metadata": {
+        "title": "The Concept of Information Overload: A Review of Literature from Organization Science, Accounting, Marketing, MIS, and Related Disciplines",
+        "authors": [
+          "Martin J. Eppler",
+          "Jeanne Mengis"
+        ],
+        "journal": "The Information Society",
+        "year": 2004,
+        "volume": "20",
+        "issue": "5",
+        "pages": "325-344"
+      },
+      "metadataVerified": true,
+      "crossref": {
+        "url": "https://api.crossref.org/works/10.1080%2F01972240490507974",
+        "httpStatus": 200,
+        "retrievedAtUTC": "2026-10-02T16:21:19.773328+00:00"
+      },
+      "europePMC": {
+        "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A10.1080%2F01972240490507974&format=json&resultType=core",
+        "httpStatus": 200,
+        "pmid": null,
+        "pmcid": null,
+        "abstractAvailable": false,
+        "abstractReviewed": false,
+        "retrievedAtUTC": "2026-10-02T16:21:20.057232+00:00"
+      },
+      "reviewLevel": "metadata_only",
+      "fullTextReviewed": false,
+      "verificationNote": "仅核对跨学科信息过载综述元数据；本次未在线阅读摘要或全文，框架概述未作内容复核。"
+    },
+    {
+      "id": "desimone1995",
+      "doi": "10.1146/annurev.ne.18.030195.001205",
+      "metadata": {
+        "title": "Neural Mechanisms of Selective Visual Attention",
+        "authors": [
+          "Robert Desimone",
+          "John Duncan"
+        ],
+        "journal": "Annual Review of Neuroscience",
+        "year": 1995,
+        "volume": "18",
+        "issue": "1",
+        "pages": "193-222"
+      },
+      "metadataVerified": true,
+      "crossref": {
+        "url": "https://api.crossref.org/works/10.1146%2Fannurev.ne.18.030195.001205",
+        "httpStatus": 200,
+        "retrievedAtUTC": "2026-10-02T16:21:19.396814+00:00"
+      },
+      "europePMC": {
+        "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A10.1146%2Fannurev.ne.18.030195.001205&format=json&resultType=core",
+        "httpStatus": 200,
+        "pmid": "7605061",
+        "pmcid": null,
+        "abstractAvailable": false,
+        "abstractReviewed": false,
+        "retrievedAtUTC": "2026-10-02T16:21:20.136282+00:00"
+      },
+      "reviewLevel": "metadata_only",
+      "fullTextReviewed": false,
+      "verificationNote": "仅核对元数据；Europe PMC 无摘要，偏置竞争框架的概述作为经典文献背景，未在本次在线核验内容。"
+    },
+    {
+      "id": "miller2001",
+      "doi": "10.1146/annurev.neuro.24.1.167",
+      "metadata": {
+        "title": "An Integrative Theory of Prefrontal Cortex Function",
+        "authors": [
+          "Earl K. Miller",
+          "Jonathan D. Cohen"
+        ],
+        "journal": "Annual Review of Neuroscience",
+        "year": 2001,
+        "volume": "24",
+        "issue": "1",
+        "pages": "167-202"
+      },
+      "metadataVerified": true,
+      "crossref": {
+        "url": "https://api.crossref.org/works/10.1146%2Fannurev.neuro.24.1.167",
+        "httpStatus": 200,
+        "retrievedAtUTC": "2026-10-02T16:21:19.473470+00:00"
+      },
+      "europePMC": {
+        "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A10.1146%2Fannurev.neuro.24.1.167&format=json&resultType=core",
+        "httpStatus": 200,
+        "pmid": "11283309",
+        "pmcid": null,
+        "abstractAvailable": true,
+        "abstractReviewed": true,
+        "retrievedAtUTC": "2026-10-02T16:21:19.971653+00:00"
+      },
+      "reviewLevel": "metadata_and_abstract",
+      "fullTextReviewed": false,
+      "verificationNote": "摘要提出主动维持目标表示及向其他脑结构提供偏置信号的理论；与展示的分布式控制解释相符。"
+    },
+    {
+      "id": "corbetta2002",
+      "doi": "10.1038/nrn755",
+      "metadata": {
+        "title": "Control of goal-directed and stimulus-driven attention in the brain",
+        "authors": [
+          "Maurizio Corbetta",
+          "Gordon L. Shulman"
+        ],
+        "journal": "Nature Reviews Neuroscience",
+        "year": 2002,
+        "volume": "3",
+        "issue": "3",
+        "pages": "201-215"
+      },
+      "metadataVerified": true,
+      "crossref": {
+        "url": "https://api.crossref.org/works/10.1038%2Fnrn755",
+        "httpStatus": 200,
+        "retrievedAtUTC": "2026-10-02T16:21:19.691390+00:00"
+      },
+      "europePMC": {
+        "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A10.1038%2Fnrn755&format=json&resultType=core",
+        "httpStatus": 200,
+        "pmid": "11994752",
+        "pmcid": null,
+        "abstractAvailable": true,
+        "abstractReviewed": true,
+        "retrievedAtUTC": "2026-10-02T16:21:20.160572+00:00"
+      },
+      "reviewLevel": "metadata_and_abstract",
+      "fullTextReviewed": false,
+      "verificationNote": "摘要区分目标导向与行为相关刺激检测网络，并说明正常视觉中二者协作；不能与大块AAL分区一一对应。"
+    },
+    {
+      "id": "cowan2001",
+      "doi": "10.1017/S0140525X01003922",
+      "metadata": {
+        "title": "The magical number 4 in short-term memory: A reconsideration of mental storage capacity",
+        "authors": [
+          "Nelson Cowan"
+        ],
+        "journal": "Behavioral and Brain Sciences",
+        "year": 2001,
+        "volume": "24",
+        "issue": "1",
+        "pages": "87-114"
+      },
+      "metadataVerified": true,
+      "crossref": {
+        "url": "https://api.crossref.org/works/10.1017%2FS0140525X01003922",
+        "httpStatus": 200,
+        "retrievedAtUTC": "2026-10-02T16:21:20.147612+00:00"
+      },
+      "europePMC": {
+        "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A10.1017%2FS0140525X01003922&format=json&resultType=core",
+        "httpStatus": 200,
+        "pmid": "11515286",
+        "pmcid": null,
+        "abstractAvailable": true,
+        "abstractReviewed": true,
+        "retrievedAtUTC": "2026-10-02T16:21:20.093619+00:00"
+      },
+      "reviewLevel": "metadata_and_abstract",
+      "fullTextReviewed": false,
+      "verificationNote": "摘要明确讨论 3–5 个组块、平均约 4 个，强调观察容量限制所需的边界条件。"
+    },
+    {
+      "id": "dux2006",
+      "doi": "10.1016/j.neuron.2006.11.009",
+      "metadata": {
+        "title": "Isolation of a Central Bottleneck of Information Processing with Time-Resolved fMRI",
+        "authors": [
+          "Paul E. Dux",
+          "Jason Ivanoff",
+          "Christopher L. Asplund",
+          "René Marois"
+        ],
+        "journal": "Neuron",
+        "year": 2006,
+        "volume": "52",
+        "issue": "6",
+        "pages": "1109-1120"
+      },
+      "metadataVerified": true,
+      "crossref": {
+        "url": "https://api.crossref.org/works/10.1016%2Fj.neuron.2006.11.009",
+        "httpStatus": 200,
+        "retrievedAtUTC": "2026-10-02T16:21:20.296125+00:00"
+      },
+      "europePMC": {
+        "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A10.1016%2Fj.neuron.2006.11.009&format=json&resultType=core",
+        "httpStatus": 200,
+        "pmid": "17178412",
+        "pmcid": "PMC2527865",
+        "abstractAvailable": true,
+        "abstractReviewed": true,
+        "retrievedAtUTC": "2026-10-02T16:21:20.244308+00:00"
+      },
+      "reviewLevel": "metadata_and_abstract",
+      "fullTextReviewed": false,
+      "verificationNote": "摘要将瓶颈限定于中央反应选择/决策操作，涉及后外侧前额叶和可能的上内侧额叶；不将结果推广为全脑串行。",
+      "fullTextAttempt": {
+        "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC2527865/fullTextXML",
+        "result": "HTTP Error 500: Internal Server Error",
+        "reviewed": false
+      }
+    },
+    {
+      "id": "monsell2003",
+      "doi": "10.1016/S1364-6613(03)00028-7",
+      "metadata": {
+        "title": "Task switching",
+        "authors": [
+          "Stephen Monsell"
+        ],
+        "journal": "Trends in Cognitive Sciences",
+        "year": 2003,
+        "volume": "7",
+        "issue": "3",
+        "pages": "134-140"
+      },
+      "metadataVerified": true,
+      "crossref": {
+        "url": "https://api.crossref.org/works/10.1016%2FS1364-6613%2803%2900028-7",
+        "httpStatus": 200,
+        "retrievedAtUTC": "2026-10-02T16:21:20.337666+00:00"
+      },
+      "europePMC": {
+        "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1016%2FS1364-6613%2803%2900028-7%22&format=json&resultType=core",
+        "httpStatus": 200,
+        "pmid": "12639695",
+        "pmcid": null,
+        "abstractAvailable": true,
+        "abstractReviewed": true,
+        "retrievedAtUTC": "2026-10-02T16:22:35.071831+00:00"
+      },
+      "reviewLevel": "metadata_and_abstract",
+      "fullTextReviewed": false,
+      "verificationNote": "摘要支持切换后变慢、通常更易错，以及准备降低但不消除成本；不主张固定损失幅度。"
+    },
+    {
+      "id": "lavie2004",
+      "doi": "10.1037/0096-3445.133.3.339",
+      "metadata": {
+        "title": "Load Theory of Selective Attention and Cognitive Control.",
+        "authors": [
+          "Nilli Lavie",
+          "Aleksandra Hirst",
+          "Jan W. de Fockert",
+          "Essi Viding"
+        ],
+        "journal": "Journal of Experimental Psychology: General",
+        "year": 2004,
+        "volume": "133",
+        "issue": "3",
+        "pages": "339-354"
+      },
+      "metadataVerified": true,
+      "crossref": {
+        "url": "https://api.crossref.org/works/10.1037%2F0096-3445.133.3.339",
+        "httpStatus": 200,
+        "retrievedAtUTC": "2026-10-02T16:21:20.385215+00:00"
+      },
+      "europePMC": {
+        "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A10.1037%2F0096-3445.133.3.339&format=json&resultType=core",
+        "httpStatus": 200,
+        "pmid": "15355143",
+        "pmcid": null,
+        "abstractAvailable": true,
+        "abstractReviewed": true,
+        "retrievedAtUTC": "2026-10-02T16:21:20.457992+00:00"
+      },
+      "reviewLevel": "metadata_and_abstract",
+      "fullTextReviewed": false,
+      "verificationNote": "摘要直接区分高感知负荷减少干扰与高工作记忆/双任务协调负荷增加干扰。"
+    },
+    {
+      "id": "shenhav2013",
+      "doi": "10.1016/j.neuron.2013.07.007",
+      "metadata": {
+        "title": "The Expected Value of Control: An Integrative Theory of Anterior Cingulate Cortex Function",
+        "authors": [
+          "Amitai Shenhav",
+          "Matthew M. Botvinick",
+          "Jonathan D. Cohen"
+        ],
+        "journal": "Neuron",
+        "year": 2013,
+        "volume": "79",
+        "issue": "2",
+        "pages": "217-240"
+      },
+      "metadataVerified": true,
+      "crossref": {
+        "url": "https://api.crossref.org/works/10.1016%2Fj.neuron.2013.07.007",
+        "httpStatus": 200,
+        "retrievedAtUTC": "2026-10-02T16:21:20.483747+00:00"
+      },
+      "europePMC": {
+        "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A10.1016%2Fj.neuron.2013.07.007&format=json&resultType=core",
+        "httpStatus": 200,
+        "pmid": "23889930",
+        "pmcid": "PMC3767969",
+        "abstractAvailable": true,
+        "abstractReviewed": true,
+        "retrievedAtUTC": "2026-10-02T16:21:20.446908+00:00"
+      },
+      "reviewLevel": "metadata_and_abstract",
+      "fullTextReviewed": false,
+      "verificationNote": "摘要明确为控制期望价值规范性模型，整合预期收益、控制投入和认知努力成本。",
+      "fullTextAttempt": {
+        "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC3767969/fullTextXML",
+        "result": "HTTP Error 500: Internal Server Error",
+        "reviewed": false
+      }
+    },
+    {
+      "id": "menon2010",
+      "doi": "10.1007/s00429-010-0262-0",
+      "metadata": {
+        "title": "Saliency, switching, attention and control: a network model of insula function",
+        "authors": [
+          "Vinod Menon",
+          "Lucina Q. Uddin"
+        ],
+        "journal": "Brain Structure and Function",
+        "year": 2010,
+        "volume": "214",
+        "issue": "5-6",
+        "pages": "655-667"
+      },
+      "metadataVerified": true,
+      "crossref": {
+        "url": "https://api.crossref.org/works/10.1007%2Fs00429-010-0262-0",
+        "httpStatus": 200,
+        "retrievedAtUTC": "2026-10-02T16:21:20.433720+00:00"
+      },
+      "europePMC": {
+        "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A10.1007%2Fs00429-010-0262-0&format=json&resultType=core",
+        "httpStatus": 200,
+        "pmid": "20512370",
+        "pmcid": "PMC2899886",
+        "abstractAvailable": true,
+        "abstractReviewed": true,
+        "retrievedAtUTC": "2026-10-02T16:21:20.759220+00:00"
+      },
+      "reviewLevel": "metadata_and_abstract",
+      "fullTextReviewed": false,
+      "verificationNote": "摘要明确为前岛叶/ACC显著性网络模型及假设；不据此称整个岛叶为唯一开关。",
+      "fullTextAttempt": {
+        "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC2899886/fullTextXML",
+        "result": "HTTP Error 500: Internal Server Error",
+        "reviewed": false
+      }
+    },
+    {
+      "id": "arnsten2009",
+      "doi": "10.1038/nrn2648",
+      "metadata": {
+        "title": "Stress signalling pathways that impair prefrontal cortex structure and function",
+        "authors": [
+          "Amy F. T. Arnsten"
+        ],
+        "journal": "Nature Reviews Neuroscience",
+        "year": 2009,
+        "volume": "10",
+        "issue": "6",
+        "pages": "410-422"
+      },
+      "metadataVerified": true,
+      "crossref": {
+        "url": "https://api.crossref.org/works/10.1038%2Fnrn2648",
+        "httpStatus": 200,
+        "retrievedAtUTC": "2026-10-02T16:21:20.707950+00:00"
+      },
+      "europePMC": {
+        "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A10.1038%2Fnrn2648&format=json&resultType=core",
+        "httpStatus": 200,
+        "pmid": "19455173",
+        "pmcid": "PMC2907136",
+        "abstractAvailable": true,
+        "abstractReviewed": true,
+        "retrievedAtUTC": "2026-10-02T16:21:20.599195+00:00"
+      },
+      "reviewLevel": "metadata_and_abstract",
+      "fullTextReviewed": false,
+      "verificationNote": "摘要区分急性不可控压力相关认知效应与更长期压力相关树突改变；不能把日常信息过载直接解释为结构损伤。",
+      "fullTextAttempt": {
+        "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC2907136/fullTextXML",
+        "result": "HTTP Error 500: Internal Server Error",
+        "reviewed": false
+      }
+    },
+    {
+      "id": "wilson2014",
+      "doi": "10.1016/j.neuron.2013.11.005",
+      "metadata": {
+        "title": "Orbitofrontal Cortex as a Cognitive Map of Task Space",
+        "authors": [
+          "Robert C. Wilson",
+          "Yuji K. Takahashi",
+          "Geoffrey Schoenbaum",
+          "Yael Niv"
+        ],
+        "journal": "Neuron",
+        "year": 2014,
+        "volume": "81",
+        "issue": "2",
+        "pages": "267-279"
+      },
+      "metadataVerified": true,
+      "crossref": {
+        "url": "https://api.crossref.org/works/10.1016%2Fj.neuron.2013.11.005",
+        "httpStatus": 200,
+        "retrievedAtUTC": "2026-10-02T16:21:20.655778+00:00"
+      },
+      "europePMC": {
+        "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A10.1016%2Fj.neuron.2013.11.005&format=json&resultType=core",
+        "httpStatus": 200,
+        "pmid": "24462094",
+        "pmcid": "PMC4001869",
+        "abstractAvailable": true,
+        "abstractReviewed": true,
+        "retrievedAtUTC": "2026-10-02T16:21:20.725317+00:00"
+      },
+      "reviewLevel": "metadata_and_abstract",
+      "fullTextReviewed": false,
+      "verificationNote": "摘要明确提出任务状态标记理论及可检验预测；OFC不能被简化为通用抑制中心。",
+      "fullTextAttempt": {
+        "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC4001869/fullTextXML",
+        "result": "HTTP Error 500: Internal Server Error",
+        "reviewed": false
+      }
+    },
+    {
+      "id": "aron2014",
+      "doi": "10.1016/j.tics.2013.12.003",
+      "metadata": {
+        "title": "Inhibition and the right inferior frontal cortex: one decade on",
+        "authors": [
+          "Adam R. Aron",
+          "Trevor W. Robbins",
+          "Russell A. Poldrack"
+        ],
+        "journal": "Trends in Cognitive Sciences",
+        "year": 2014,
+        "volume": "18",
+        "issue": "4",
+        "pages": "177-185"
+      },
+      "metadataVerified": true,
+      "crossref": {
+        "url": "https://api.crossref.org/works/10.1016%2Fj.tics.2013.12.003",
+        "httpStatus": 200,
+        "retrievedAtUTC": "2026-10-02T16:21:20.771998+00:00"
+      },
+      "europePMC": {
+        "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A10.1016%2Fj.tics.2013.12.003&format=json&resultType=core",
+        "httpStatus": 200,
+        "pmid": "24440116",
+        "pmcid": null,
+        "abstractAvailable": true,
+        "abstractReviewed": true,
+        "retrievedAtUTC": "2026-10-02T16:21:20.805793+00:00"
+      },
+      "reviewLevel": "metadata_and_abstract",
+      "fullTextReviewed": false,
+      "verificationNote": "摘要涉及右额下回及额叶—基底节网络并讨论争论；并非由OFC独自执行所有抑制。"
+    },
+    {
+      "id": "aal2002",
+      "doi": "10.1006/nimg.2001.0978",
+      "metadata": {
+        "title": "Automated Anatomical Labeling of Activations in SPM Using a Macroscopic Anatomical Parcellation of the MNI MRI Single-Subject Brain",
+        "authors": [
+          "N. Tzourio-Mazoyer",
+          "B. Landeau",
+          "D. Papathanassiou",
+          "F. Crivello",
+          "O. Etard",
+          "N. Delcroix",
+          "B. Mazoyer",
+          "M. Joliot"
+        ],
+        "journal": "NeuroImage",
+        "year": 2002,
+        "volume": "15",
+        "issue": "1",
+        "pages": "273-289"
+      },
+      "metadataVerified": true,
+      "crossref": {
+        "url": "https://api.crossref.org/works/10.1006%2Fnimg.2001.0978",
+        "httpStatus": 200,
+        "retrievedAtUTC": "2026-10-02T16:21:20.805793+00:00"
+      },
+      "europePMC": {
+        "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A10.1006%2Fnimg.2001.0978&format=json&resultType=core",
+        "httpStatus": 200,
+        "pmid": "11771995",
+        "pmcid": null,
+        "abstractAvailable": true,
+        "abstractReviewed": true,
+        "retrievedAtUTC": "2026-10-02T16:21:20.850828+00:00"
+      },
+      "reviewLevel": "metadata_and_abstract",
+      "fullTextReviewed": false,
+      "verificationNote": "摘要描述MNI单受试者解剖分区，并明确宏观标记不能替代更精细的概率定位。"
+    }
+  ]
+}

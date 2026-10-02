@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#17131c">
+  <link rel="icon" href="data:,">
+  <title>信息过载：大脑如何选择与协调 · Brainlight</title>
+  <link rel="stylesheet" href="css/overload.css">
+</head>
+<body class="overload-app">
+  <header class="research-header">
+    <a class="brand-link" href="brainlight.html">Brainlight<span>研究与体验</span></a>
+    <nav aria-label="专题导航"><a href="#mechanisms">神经机制</a><a href="#experiment">亲自体验</a><a href="#corrections">图片纠偏</a></nav>
+    <button type="button" id="overload-sources-open">研究文献 ↗</button>
+  </header>
+
+  <main class="research-shell">
+    <section class="research-intro">
+      <p class="eyebrow">ATTENTION · MEMORY · COGNITIVE CONTROL</p>
+      <h1>信息没有停止。<br><span>大脑如何决定，什么值得处理？</span></h1>
+      <p>当输入、记忆和决策的要求超过当下可用的处理能力，我们会更难筛选、保持目标和做出判断。信息过载是任务与人的关系，不是某一个脑区“装满了”。</p>
+      <div class="research-badges"><span>5 个关键机制</span><span id="reference-count">经典文献导览</span><span>可交互皮层模型</span></div>
+    </section>
+
+    <section class="overload-workbench" id="mechanisms" aria-label="信息过载神经机制">
+      <section class="mechanism-panel">
+        <div class="section-heading"><p class="eyebrow">01 / 理解机制</p><h2>从竞争到协调</h2></div>
+        <div id="mechanism-tabs" role="tablist" aria-label="选择机制"></div>
+        <p class="provenance-note">这些机制会相互作用。选择顺序只是讲解顺序，并非神经信号的传播路径。</p>
+      </section>
+
+      <section class="brain-stage" aria-label="相关皮层的解剖参照">
+        <div class="stage-toolbar" aria-label="模型控制">
+          <button type="button" data-brain-view="left" aria-pressed="true">左侧</button><button type="button" data-brain-view="front" aria-pressed="false">正面</button><button type="button" data-brain-view="top" aria-pressed="false">顶部</button><button type="button" data-brain-view="bottom" aria-pressed="false">底部</button>
+          <button type="button" id="overload-inside" role="switch" aria-checked="false">透视皮层</button>
+        </div>
+        <div id="overload-brain" tabindex="0" aria-label="可拖动旋转、滚动缩放的皮层模型"></div>
+        <div id="overload-labels" aria-label="脑区标签"></div>
+        <div id="overload-loading" role="status">正在加载真实皮层表面…</div>
+        <div id="overload-error" role="alert" hidden></div>
+        <p class="stage-caption">高亮＝本主题涉及的解剖参照<br>不是实时脑活动、过载读数或个体功能定位</p>
+      </section>
+
+      <article class="mechanism-detail" id="mechanism-detail" role="tabpanel" aria-labelledby="mechanism-title">
+        <p class="eyebrow" id="mechanism-number"></p><h2 id="mechanism-title"></h2>
+        <p id="mechanism-summary"></p><div id="mechanism-body"></div>
+        <div class="takeaway-box"><span>记住这一点</span><p id="mechanism-takeaway"></p></div>
+        <div id="mechanism-evidence" class="citation-list"></div>
+        <div class="network-regions" id="network-regions" aria-label="相关脑区"></div>
+        <section class="region-insight" id="region-insight" hidden><h3 id="overload-region-name"></h3><p id="overload-region-description"></p><p id="overload-region-note" class="provenance-note"></p><div id="overload-region-evidence" class="citation-list"></div></section>
+      </article>
+    </section>
+
+    <section class="experiment-panel" id="experiment">
+      <div class="section-heading"><p class="eyebrow">02 / 亲自体验</p><h2>同样的图形，换一条规则</h2></div>
+      <p class="experiment-intro">在稳定规则、规则切换和额外视觉干扰下完成分类。我们只记录你本轮的反应与正确率，不推算脑区活动，也不生成“过载指数”。</p>
+      <div class="experiment-layout">
+        <div class="experiment-controls">
+          <label for="trial-condition">本轮条件</label><select id="trial-condition"><option value="stable">A · 固定规则</option><option value="switch">B · 规则切换</option><option value="distract">C · 切换＋视觉干扰</option></select>
+          <label for="trial-length">本轮题数</label><select id="trial-length"><option value="12">12 题 · 快速体验</option><option value="24">24 题 · 多一些观察</option></select>
+          <div class="experiment-instructions"><h3>只判断中央图形</h3><p>先看提示：<strong>按形状</strong>，还是<strong>按颜色</strong>。</p><p><kbd>F</kbd> / 左按钮：圆形或蓝色<br><kbd>J</kbd> / 右按钮：方形或杏色</p><p>每题最多 3.5 秒。干扰卡片不需要回应。</p></div>
+          <div class="trial-actions"><button type="button" id="trial-start">开始这一轮 →</button><button type="button" id="trial-stop" disabled>停止</button></div>
+          <p class="provenance-note">本体验不是标准化神经心理测验，也没有临床阈值。练习、设备、先后顺序和随机波动均会影响结果。</p>
+        </div>
+
+        <div class="visual-task" aria-label="视觉分类体验区">
+          <div class="task-topline"><strong id="task-status">准备好后，开始一轮</strong><span id="trial-progress">0 / 12</span></div>
+          <div id="task-field"><div id="task-target" hidden aria-label="本题图形"></div><div class="task-idle" id="task-idle"><span aria-hidden="true">○ □</span><p>保持同一目标<br>观察规则改变时的体验</p></div><div id="task-distractors" aria-hidden="true"></div></div>
+          <div class="response-buttons"><button type="button" id="respond-left" disabled><kbd>F</kbd><strong>圆形 / 蓝色</strong></button><button type="button" id="respond-right" disabled><kbd>J</kbd><strong>方形 / 杏色</strong></button></div>
+          <p id="trial-message" role="status" aria-live="polite">准备阶段不计时；按规则选择左右按钮即可。</p>
+        </div>
+      </div>
+      <div class="experiment-results"><div class="results-heading"><h3>本次会话中的观察</h3><button type="button" id="trial-reset">清空记录</button></div><div id="trial-results"></div><p class="provenance-note">只展示每种条件最近一轮的结果，数据仅保留在当前页面。A 只判断形状，B 和 C 还包括颜色，因此条件差异混合了规则类型、切换和练习等因素，不能解释为纯粹的切换成本。少量试次不能检验论文结论或用于诊断。切换标签页或打开文献会终止本轮。</p></div>
+    </section>
+
+    <section class="correction-section" id="corrections"><div class="section-heading"><p class="eyebrow">03 / 回看你提供的图片</p><h2>有帮助的比喻，也有需要收紧的表述</h2></div><div id="correction-cards"></div></section>
+    <section class="recommendation-section"><div class="section-heading"><p class="eyebrow">04 / 把机制变成做法</p><h2>减少竞争，给任务留出余地</h2></div><div id="recommendation-cards"></div><p class="provenance-note">以下做法是机制启发的工作设计建议，并非这些论文直接验证过的统一干预方案；效果取决于任务和环境。</p></section>
+  </main>
+
+  <footer class="research-footer"><span>Brainlight · 信息过载研究专题</span><p>基于经典研究的叙述性梳理，非系统综述。已在线核对 14 篇文献元数据并阅读其中 12 篇摘要，尚未逐篇阅读全文。页面区分实验结果、综述与理论模型；核验范围见完整笔记。</p><a href="information-overload-research.md">完整研究笔记与参考文献 ↗</a><a href="brainlight.html">回到视觉脑图谱 ↗</a></footer>
+
+  <dialog id="overload-sources" aria-labelledby="overload-sources-title"><div class="sources-content"><button type="button" id="overload-sources-close" aria-label="关闭参考文献">×</button><p class="eyebrow">REFERENCES &amp; EVIDENCE BOUNDARIES</p><h2 id="overload-sources-title">研究文献与证据边界</h2><p>每张机制卡和图片纠偏项都链接到这里。功能关联不等于单区专属职责；解剖高亮不是论文的功能定位图。</p><div id="overload-source-list"></div></div></dialog>
+
+  <script src="js/pako.js"></script>
+  <script src="js/brainbrowser/brainbrowser.js"></script>
+  <script src="js/brainbrowser/core/tree-store.js"></script>
+  <script src="js/brainbrowser/lib/config.js"></script>
+  <script src="js/brainbrowser/lib/utils.js"></script>
+  <script src="js/brainbrowser/lib/events.js"></script>
+  <script src="js/brainbrowser/lib/loader.js"></script>
+  <script src="js/brainbrowser/lib/color-map.js"></script>
+  <script src="js/brainbrowser/surface-viewer.js"></script>
+  <script src="js/brainbrowser/surface-viewer/lib/three.js"></script>
+  <script src="js/brainbrowser/surface-viewer/lib/parse-intensity-data.js"></script>
+  <script src="js/brainbrowser/surface-viewer/modules/annotations.js"></script>
+  <script src="js/brainbrowser/surface-viewer/modules/color.js"></script>
+  <script src="js/brainbrowser/surface-viewer/modules/loading.js"></script>
+  <script src="js/brainbrowser/surface-viewer/modules/rendering.js"></script>
+  <script src="js/brainbrowser/surface-viewer/modules/views.js"></script>
+  <script src="js/brainlight-renderer.js"></script>
+  <script src="js/overload-data.js"></script>
+  <script src="js/overload.js"></script>
+</body>
+</html>
