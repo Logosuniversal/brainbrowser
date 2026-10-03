@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#17131c">
   <link rel="icon" href="data:,">
   <title>信息过载：大脑如何选择与协调 · Brainlight</title>
-  <link rel="stylesheet" href="css/overload.css?v=xray-4">
+  <link rel="stylesheet" href="css/overload.css?v=rules-5">
 </head>
 <body class="overload-app">
   <header class="research-header">
@@ -54,24 +54,35 @@
 
     <section class="experiment-panel" id="experiment">
       <div class="section-heading"><p class="eyebrow">02 / 亲自体验</p><h2>同样的图形，换一条规则</h2></div>
-      <p class="experiment-intro">在稳定规则、规则切换和额外视觉干扰下完成分类。我们只记录你本轮的反应与正确率，不推算脑区活动，也不生成“过载指数”。</p>
+      <p class="experiment-intro"><strong>体验目的：</strong>比较规则固定、规则切换和出现视觉干扰时，你判断中央图形的速度与正确率，观察自己的表现是否发生变化。</p>
       <div class="experiment-layout">
         <div class="experiment-controls">
           <label for="trial-condition">本轮条件</label><select id="trial-condition"><option value="stable">A · 固定规则</option><option value="switch">B · 规则切换</option><option value="distract">C · 切换＋视觉干扰</option></select>
           <label for="trial-length">本轮题数</label><select id="trial-length"><option value="12">12 题 · 快速体验</option><option value="24">24 题 · 多一些观察</option></select>
-          <div class="experiment-instructions"><h3>只判断中央图形</h3><p>先看提示：<strong>按形状</strong>，还是<strong>按颜色</strong>。</p><p><kbd>F</kbd> / 左按钮：圆形或蓝色<br><kbd>J</kbd> / 右按钮：方形或杏色</p><p>每题最多 3.5 秒。干扰卡片不需要回应。</p></div>
-          <div class="trial-actions"><button type="button" id="trial-start">开始这一轮 →</button><button type="button" id="trial-stop" disabled>停止</button></div>
+          <p id="condition-help">本轮只按形状判断，图形的颜色不影响答案。</p>
           <p class="provenance-note">本体验不是标准化神经心理测验，也没有临床阈值。练习、设备、先后顺序和随机波动均会影响结果。</p>
         </div>
 
         <div class="visual-task" aria-label="视觉分类体验区">
-          <div class="task-topline"><strong id="task-status">准备好后，开始一轮</strong><span id="trial-progress">0 / 12</span></div>
-          <div id="task-field"><div id="task-target" hidden aria-label="本题图形"></div><div class="task-idle" id="task-idle"><span aria-hidden="true">○ □</span><p>保持同一目标<br>观察规则改变时的体验</p></div><div id="task-distractors" aria-hidden="true"></div></div>
-          <div class="response-buttons"><button type="button" id="respond-left" disabled><kbd>F</kbd><strong>圆形 / 蓝色</strong></button><button type="button" id="respond-right" disabled><kbd>J</kbd><strong>方形 / 杏色</strong></button></div>
-          <p id="trial-message" role="status" aria-live="polite">准备阶段不计时；按规则选择左右按钮即可。</p>
+          <section class="task-guide" id="task-guide" aria-labelledby="task-guide-title">
+            <p class="eyebrow">开始前，先看这里</p>
+            <h3 id="task-guide-title">先看规则，再判断中央图形</h3>
+            <p class="guide-lead">每题先看上方提示，只回答中央图形。周围的文字卡片不用回应。</p>
+            <div class="rule-cards">
+              <div class="rule-card"><h4>提示「按形状」</h4><p><span class="guide-shape guide-circle" aria-hidden="true"></span>圆形 → 左按钮 / <kbd>F</kbd></p><p><span class="guide-shape guide-square" aria-hidden="true"></span>方形 → 右按钮 / <kbd>J</kbd></p><small>忽略颜色，只看形状。</small></div>
+              <div class="rule-card"><h4>提示「按颜色」</h4><p><span class="guide-shape guide-circle guide-blue" aria-hidden="true"></span>蓝色 → 左按钮 / <kbd>F</kbd></p><p><span class="guide-shape guide-circle guide-amber" aria-hidden="true"></span>杏色 → 右按钮 / <kbd>J</kbd></p><small>忽略形状，只看颜色。</small></div>
+            </div>
+            <div class="guide-example"><span class="guide-shape guide-circle guide-amber" aria-hidden="true"></span><p><strong>例如，同一个杏色圆形：</strong><br>按形状时选左 / F；按颜色时选右 / J。</p></div>
+            <p class="guide-timing">手机点击左右按钮；电脑也可按 F / J。每题最多 3.5 秒，选完自动进入下一题。</p>
+          </section>
+          <div class="trial-actions"><button type="button" id="trial-start" aria-describedby="task-guide-title">看懂玩法，开始这一轮 →</button><button type="button" id="trial-stop" disabled>停止</button></div>
+          <div class="task-topline"><div><strong id="task-status">先看上面的玩法，再开始</strong><p id="task-rule-detail">开始后，每题会在这里显示当前规则。</p></div><span id="trial-progress">0 / 12</span></div>
+          <div id="task-field"><div id="task-target" hidden aria-label="本题图形"></div><div class="task-idle" id="task-idle"><span aria-hidden="true">○ □</span><p>中央图形会出现在这里</p></div><div id="task-distractors" aria-hidden="true"></div></div>
+          <div class="response-buttons"><button type="button" id="respond-left" disabled><kbd>F</kbd><strong id="response-left-label">左按钮</strong></button><button type="button" id="respond-right" disabled><kbd>J</kbd><strong id="response-right-label">右按钮</strong></button></div>
+          <p id="trial-message" role="status" aria-live="polite">阅读玩法时不计时。看懂后再点击“开始这一轮”。</p>
         </div>
       </div>
-      <div class="experiment-results"><div class="results-heading"><h3>本次会话中的观察</h3><button type="button" id="trial-reset">清空记录</button></div><div id="trial-results"></div><p class="provenance-note">只展示每种条件最近一轮的结果，数据仅保留在当前页面。A 只判断形状，B 和 C 还包括颜色，因此条件差异混合了规则类型、切换和练习等因素，不能解释为纯粹的切换成本。少量试次不能检验论文结论或用于诊断。切换标签页或打开文献会终止本轮。</p></div>
+      <div class="experiment-results"><div class="results-heading"><h3>本次会话中的观察</h3><button type="button" id="trial-reset">清空记录</button></div><div id="trial-results"></div><p class="provenance-note">只记录本轮反应时间与正确率，不推算脑区活动，也不生成“过载指数”。只展示每种条件最近一轮的结果，数据仅保留在当前页面。A 只判断形状，B 和 C 还包括颜色，因此条件差异混合了规则类型、切换和练习等因素，不能解释为纯粹的切换成本。少量试次不能检验论文结论或用于诊断。切换标签页或打开文献会终止本轮。</p></div>
     </section>
 
     <section class="correction-section" id="corrections"><div class="section-heading"><p class="eyebrow">03 / 回看你提供的图片</p><h2>有帮助的比喻，也有需要收紧的表述</h2></div><div id="correction-cards"></div></section>
@@ -100,6 +111,6 @@
   <script src="js/brainbrowser/surface-viewer/modules/views.js"></script>
   <script src="js/brainlight-renderer.js?v=xray-4"></script>
   <script src="js/overload-data.js?v=xray-4"></script>
-  <script src="js/overload.js?v=xray-4"></script>
+  <script src="js/overload.js?v=rules-5"></script>
 </body>
 </html>

@@ -253,12 +253,33 @@
     el("respond-right").disabled = !value;
   }
 
+  function showRule(rule) {
+    var shape = rule === "shape";
+    if (rule) { el("task-status").dataset.rule = rule; }
+    else { el("task-status").removeAttribute("data-rule"); }
+    el("task-rule-detail").textContent = rule ? (shape ?
+      "忽略颜色 · 圆形选左 / F，方形选右 / J" :
+      "忽略形状 · 蓝色选左 / F，杏色选右 / J") :
+      "开始后，每题会在这里显示当前规则。";
+    el("response-left-label").textContent = rule ? (shape ? "圆形 · 左" : "蓝色 · 左") : "左按钮";
+    el("response-right-label").textContent = rule ? (shape ? "方形 · 右" : "杏色 · 右") : "右按钮";
+  }
+
+  function describeCondition() {
+    var descriptions = {
+      stable: "本轮只按形状判断，图形的颜色不影响答案。",
+      "switch": "本轮会在形状与颜色之间切换。每题以上方显示的规则为准。",
+      distract: "本轮会切换规则，并出现文字干扰卡片。只判断中央图形，忽略周围文字。"
+    };
+    el("condition-help").textContent = descriptions[el("trial-condition").value];
+  }
+
   function showTrial(token) {
     if (!running || token !== run_token) { return; }
     var trial = sequence[trial_index];
     el("trial-progress").textContent = (trial_index + 1) + " / " + sequence.length;
     el("task-status").textContent = trial.rule === "shape" ? "这一题：按形状判断" : "这一题：按颜色判断";
-    el("task-status").dataset.rule = trial.rule;
+    showRule(trial.rule);
     el("task-target").hidden = false;
     el("task-target").className = "target-" + trial.shape + " target-" + trial.color;
     el("task-target").setAttribute("aria-label", (trial.color === "blue" ? "蓝色" : "杏色") + (trial.shape === "circle" ? "圆形" : "方形"));
@@ -310,6 +331,9 @@
     el("trial-stop").disabled = true;
     el("task-target").hidden = true;
     el("task-idle").hidden = false;
+    el("task-guide").hidden = false;
+    el("trial-start").textContent = "看懂玩法，开始这一轮 →";
+    showRule(null);
     clear(el("task-distractors"));
     enableResponses(false);
   }
@@ -353,9 +377,12 @@
     el("trial-reset").disabled = true;
     el("trial-stop").disabled = false;
     el("task-idle").hidden = true;
+    el("task-guide").hidden = true;
+    el("trial-start").textContent = "本轮进行中";
+    showRule(null);
     el("task-status").textContent = "准备：先读规则，再作答";
     el("trial-message").textContent = "即将开始，准备阶段不计时。";
-    el("task-field").scrollIntoView({block: "nearest", behavior: "instant"});
+    document.querySelector(".visual-task").scrollIntoView({block: "nearest", behavior: "instant"});
     var token = run_token;
     gap_timer = setTimeout(function() { showTrial(token); }, 750);
   }
@@ -384,6 +411,7 @@
   el("respond-right").addEventListener("click", function() { recordResponse("right"); });
   el("trial-reset").addEventListener("click", function() { results = {}; renderResults(); el("trial-message").textContent = "本页面的体验记录已清空。"; });
   el("trial-length").addEventListener("change", function() { el("trial-progress").textContent = "0 / " + this.value; });
+  el("trial-condition").addEventListener("change", describeCondition);
   document.addEventListener("keydown", function(event) {
     if (!accepting || event.repeat || el("overload-sources").open) { return; }
     if (/^(INPUT|SELECT|TEXTAREA)$/.test(event.target.tagName)) { return; }
