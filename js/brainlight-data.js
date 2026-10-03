@@ -8,14 +8,15 @@
 
   window.BrainlightData = {
     lobes: [
-      { id: "occipital", label: "枕叶", color: "#ba90bb" },
-      { id: "temporal", label: "颞叶", color: "#a5bd86" },
-      { id: "parietal", label: "顶叶", color: "#87b8d4" }
+      { id: "occipital", label: "枕叶", color: "#35b6ff" },
+      { id: "temporal", label: "颞叶", color: "#cb73ff" },
+      { id: "parietal", label: "顶叶", color: "#ffd84a" }
     ],
 
     regions: [
       {
         id: "visual",
+        color: "#35b6ff",
         short: "Medial occipital",
         name: "枕叶内侧皮层",
         english: "Calcarine cortex, cuneus & lingual gyrus",
@@ -29,6 +30,7 @@
       },
       {
         id: "visual-association",
+        color: "#ff5c91",
         short: "Occipital",
         name: "枕上回、枕中回与枕下回",
         english: "Superior, middle & inferior occipital gyri",
@@ -42,6 +44,7 @@
       },
       {
         id: "fusiform",
+        color: "#cb73ff",
         short: "Fusiform",
         name: "梭状回",
         english: "Fusiform gyrus",
@@ -55,6 +58,7 @@
       },
       {
         id: "inferior-temporal",
+        color: "#ff8239",
         short: "Inferior temporal",
         name: "颞下回",
         english: "Inferior temporal gyrus",
@@ -68,6 +72,7 @@
       },
       {
         id: "superior-parietal",
+        color: "#ffd84a",
         short: "Parietal",
         name: "顶上小叶与楔前叶",
         english: "Superior parietal lobule & precuneus",
@@ -81,6 +86,7 @@
       },
       {
         id: "parahippocampal",
+        color: "#45df94",
         short: "PHG",
         name: "海马旁回",
         english: "Parahippocampal gyrus",

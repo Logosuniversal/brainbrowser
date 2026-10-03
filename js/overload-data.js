@@ -20,7 +20,7 @@
 
     regions: [
       {
-        id: "lateral-pfc", short: "外侧 PFC", name: "外侧前额叶的解剖参照",
+        id: "lateral-pfc", short: "外侧 PFC", name: "外侧前额叶的解剖参照", color: "#35b6ff",
         english: "Dorsolateral superior frontal & middle frontal gyri",
         lobe: "frontal", atlas: [3, 4, 7, 8], view: "left",
         description: "外侧前额叶参与维持任务目标、规则与上下文，影响其他区域对相关信息的加工。它与顶叶及其他区域共同工作。",
@@ -29,7 +29,7 @@
         evidence: ["miller2001", "arnsten2009", "aal2002"]
       },
       {
-        id: "parietal", short: "顶叶", name: "后顶叶的解剖参照",
+        id: "parietal", short: "顶叶", name: "后顶叶的解剖参照", color: "#ffd84a",
         english: "Superior/inferior parietal, supramarginal, angular gyri & precuneus",
         lobe: "parietal", atlas: [59, 60, 61, 62, 63, 64, 65, 66, 67, 68], view: "top",
         description: "后顶叶的部分区域与额叶协作，参与视觉空间注意、目标选择和任务相关表征。不同顶叶区域具有不同功能。",
@@ -38,7 +38,7 @@
         evidence: ["corbetta2002", "aal2002"]
       },
       {
-        id: "acc", short: "前扣带", name: "前扣带及旁扣带皮层",
+        id: "acc", short: "前扣带", name: "前扣带及旁扣带皮层", color: "#45df94",
         english: "Anterior cingulate & paracingulate gyri",
         lobe: "limbic", atlas: [31, 32], view: "front",
         description: "前扣带皮层的部分区域与表现监控及控制分配有关。“控制的期望价值”理论强调收益、代价和控制需求的综合评估。",
@@ -47,7 +47,7 @@
         evidence: ["shenhav2013", "aal2002"]
       },
       {
-        id: "insula", short: "岛叶", name: "岛叶（前岛叶的解剖背景）",
+        id: "insula", short: "岛叶", name: "岛叶（前岛叶的解剖背景）", color: "#cb73ff",
         english: "Insula; anatomical context for the anterior insula",
         lobe: "insula", atlas: [29, 30], view: "left",
         description: "前岛叶与显著性网络及内感受有关，有研究模型提出它参与识别显著事件和协调网络间的状态变化。",
@@ -56,7 +56,7 @@
         evidence: ["menon2010", "aal2002"]
       },
       {
-        id: "ofc", short: "眶额", name: "眶额皮层的解剖参照",
+        id: "ofc", short: "眶额", name: "眶额皮层的解剖参照", color: "#ff8239",
         english: "Orbital frontal parcels & gyrus rectus",
         lobe: "frontal", atlas: [5, 6, 9, 10, 15, 16, 25, 26, 27, 28], view: "bottom",
         description: "眶额皮层参与结果预期、价值相关学习及任务状态表征。它可帮助理解选择，但不是信息过载的单一核心或通用抑制中心。",
@@ -65,7 +65,7 @@
         evidence: ["wilson2014", "aron2014", "aal2002"]
       },
       {
-        id: "visual", short: "视觉皮层", name: "枕叶视觉加工的解剖参照",
+        id: "visual", short: "视觉皮层", name: "枕叶视觉加工的解剖参照", color: "#ff5c91",
         english: "Superior, middle & inferior occipital gyri",
         lobe: "occipital", atlas: [49, 50, 51, 52, 53, 54], view: "back",
         description: "视觉信息的加工会受到刺激之间的竞争、显著性及当前任务目标的共同影响。注意会偏置这种竞争。",

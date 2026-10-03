@@ -105,6 +105,7 @@
       lobe_regions.forEach(function(region) {
         var card = button("", "region-card", function() { showRegion(region.id, "left"); });
         card.dataset.region = region.id;
+        card.style.setProperty("--region-color", region.color);
         card.appendChild(textElement("strong", region.short));
         card.appendChild(textElement("small", region.name));
         grid.appendChild(card);
@@ -117,6 +118,7 @@
   function showRegion(id, side) {
     var region = regions[id];
     if (!region) { return; }
+    if (playing) { playing = false; previous_time = null; updateProgress(); }
     selected_region = region;
     selected_side = side === "right" ? "right" : "left";
     byId("region-index").hidden = true;
@@ -208,6 +210,12 @@
     if (!ready) { return; }
     if (progress >= 1) { progress = 0; }
     playing = !playing;
+    if (playing && selected_region) {
+      selected_region = null;
+      renderer.selectRegion(null);
+      byId("region-index").hidden = false;
+      byId("region-detail").hidden = true;
+    }
     previous_time = null;
     updateProgress();
   }

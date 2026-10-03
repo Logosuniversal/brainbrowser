@@ -24,6 +24,8 @@
     var regions = {};
     var atlasRegions = {};
     var lobeColors = {};
+    var regionColors = {};
+    var highlightParts = [];
     var anchors = [];
     var requests = [];
     var blobURLs = [];
@@ -33,8 +35,7 @@
     var resizeObserver;
     var baseZoom = 1;
     var center = new THREE.Vector3();
-    var base = new THREE.Color("#c98e7b");
-    var highlight = new THREE.Color("#ffd292");
+    var base = new THREE.Color("#657080");
     var shade;
     var api = {};
 
@@ -43,6 +44,9 @@
     });
     data.regions.forEach(function(region) {
       regions[region.id] = region;
+      regionColors[region.id] = new THREE.Color(region.color || data.lobes.filter(function(lobe) {
+        return lobe.id === region.lobe;
+      })[0].color);
       region.atlas.forEach(function(value) {
         // AAL Heschl parcels are deliberately excluded from interaction.
         if (value !== 79 && value !== 80) {
@@ -102,21 +106,19 @@
 
     function updateColors() {
       if (!ready || destroyed) { return; }
-      var i, value, region, color, amount, side, strength;
+      var i, value, region, color, amount, strength;
       for (i = 0; i < atlas.length; i++) {
         value = Math.round(atlas[i]);
         region = atlasRegions[value];
-        side = value % 2 ? "left" : "right";
         color = lobeMap ? colorForAtlas(value) : base;
-        amount = region ? Math.max(0, Math.min(1, activities[region.id] || 0)) : 0;
-        if (region && selected && selected.id === region.id &&
-            (!selected.side || selected.side === side)) {
-          amount = Math.max(amount, 0.76);
-        }
+        // Keep region identities visible in the context surface. Bright teaching
+        // highlights use separate meshes so cortex opacity cannot wash them out.
+        amount = region && !lobeMap ? (selected ? 0.12 : 0.34) : 0;
         strength = shade[i];
-        colorBuffer[i * 4] = (color.r * (1 - amount) + highlight.r * amount) * strength;
-        colorBuffer[i * 4 + 1] = (color.g * (1 - amount) + highlight.g * amount) * strength;
-        colorBuffer[i * 4 + 2] = (color.b * (1 - amount) + highlight.b * amount) * strength;
+        var tint = region ? regionColors[region.id] : base;
+        colorBuffer[i * 4] = (color.r * (1 - amount) + tint.r * amount) * strength;
+        colorBuffer[i * 4 + 1] = (color.g * (1 - amount) + tint.g * amount) * strength;
+        colorBuffer[i * 4 + 2] = (color.b * (1 - amount) + tint.b * amount) * strength;
         colorBuffer[i * 4 + 3] = 1;
       }
       viewer.model.children.forEach(function(shape) {
@@ -135,7 +137,109 @@
         }
         attribute.needsUpdate = true;
       });
+      updateHighlights();
       viewer.updated = true;
+    }
+
+    function updateHighlights() {
+      highlightParts.forEach(function(part) {
+        var focused = selected && selected.id === part.id && (!selected.side || selected.side === part.side);
+        var amount = Math.max(0, Math.min(1, activities[part.id] || 0));
+        if (selected) { amount = focused ? 1 : 0; }
+        part.mesh.visible = amount > 0.01;
+        // Completed steps remain quiet; the current region is almost opaque,
+        // regardless of the surrounding cortex's transparency setting.
+        part.mesh.material.opacity = amount >= 0.5 ? 0.99 : 0.38;
+        part.mesh.material.depthWrite = amount >= 0.5;
+        part.outline.visible = amount >= 0.5;
+      });
+    }
+
+    function createHighlights() {
+      var vertices = modelData.vertices;
+      var normals = modelData.normals;
+      viewer.model.children.forEach(function(surface) {
+        var groups = {};
+        var indices = surface.userData.original_data.indices;
+        var i, a, b, c, region, side, key;
+        for (i = 0; i < indices.length; i += 3) {
+          a = indices[i]; b = indices[i + 1]; c = indices[i + 2];
+          region = atlasRegions[Math.round(atlas[a])];
+          // Only use faces entirely inside the same labeled region/hemisphere.
+          // The overlay follows the bundled surface, without expanding parcels.
+          if (!region || atlasRegions[Math.round(atlas[b])] !== region ||
+              atlasRegions[Math.round(atlas[c])] !== region ||
+              Math.round(atlas[a]) % 2 !== Math.round(atlas[b]) % 2 ||
+              Math.round(atlas[a]) % 2 !== Math.round(atlas[c]) % 2) { continue; }
+          side = Math.round(atlas[a]) % 2 ? "left" : "right";
+          key = region.id + ":" + side;
+          if (!groups[key]) { groups[key] = {id: region.id, side: side, indices: []}; }
+          groups[key].indices.push(a, b, c);
+        }
+        Object.keys(groups).forEach(function(key) {
+          var group = groups[key];
+          var color = regionColors[group.id];
+          var positions = new Float32Array(group.indices.length * 3);
+          var meshNormals = new Float32Array(positions.length);
+          var colors = new Float32Array(positions.length);
+          var edges = {};
+          group.indices.forEach(function(index, offset) {
+            var strength = Math.max(0.72, Math.min(1.02, shade[index]));
+            for (var k = 0; k < 3; k++) {
+              positions[offset * 3 + k] = vertices[index * 3 + k];
+              meshNormals[offset * 3 + k] = normals ? normals[index * 3 + k] : 0;
+            }
+            colors[offset * 3] = color.r * strength;
+            colors[offset * 3 + 1] = color.g * strength;
+            colors[offset * 3 + 2] = color.b * strength;
+          });
+          for (var i = 0; i < group.indices.length; i += 3) {
+            for (var j = 0; j < 3; j++) {
+              var a = group.indices[i + j];
+              var b = group.indices[i + (j + 1) % 3];
+              var edgeKey = Math.min(a, b) + ":" + Math.max(a, b);
+              if (!edges[edgeKey]) { edges[edgeKey] = {a: a, b: b, count: 0}; }
+              edges[edgeKey].count++;
+            }
+          }
+          var border = [];
+          Object.keys(edges).forEach(function(key) {
+            var edge = edges[key];
+            if (edge.count !== 1) { return; }
+            [edge.a, edge.b].forEach(function(index) {
+              for (var k = 0; k < 3; k++) {
+                border.push(vertices[index * 3 + k] + (normals ? normals[index * 3 + k] * 0.2 : 0));
+              }
+            });
+          });
+          var geometry = new THREE.BufferGeometry();
+          geometry.addAttribute("position", new THREE.BufferAttribute(positions, 3));
+          geometry.addAttribute("normal", new THREE.BufferAttribute(meshNormals, 3));
+          geometry.addAttribute("color", new THREE.BufferAttribute(colors, 3));
+          if (!normals) { geometry.computeVertexNormals(); }
+          var material = new THREE.MeshPhongMaterial({color: 0xffffff, ambient: 0xffffff,
+            emissive: 0x242424, specular: 0x161b24, shininess: 12,
+            vertexColors: THREE.VertexColors, side: THREE.DoubleSide,
+            transparent: true, opacity: 0.99, depthWrite: true,
+            polygonOffset: true, polygonOffsetFactor: -1, polygonOffsetUnits: -1});
+          var mesh = new THREE.Mesh(geometry, material);
+          mesh.name = "highlight-" + key;
+          mesh.renderDepth = -100;
+          // Keep picking attached to the original anatomical surface.
+          mesh.raycast = function() {};
+          surface.add(mesh);
+          var borderGeometry = new THREE.BufferGeometry();
+          borderGeometry.addAttribute("position", new THREE.BufferAttribute(new Float32Array(border), 3));
+          var outline = new THREE.Line(borderGeometry,
+            new THREE.LineBasicMaterial({color: 0xf2f7ff, transparent: true, opacity: 0.86, depthWrite: false}), THREE.LinePieces);
+          outline.name = "outline-" + key;
+          outline.renderDepth = -101;
+          outline.raycast = function() {};
+          surface.add(outline);
+          highlightParts.push({id: group.id, side: group.side, mesh: mesh, outline: outline,
+            triangles: group.indices.length / 3});
+        });
+      });
     }
 
     function createAnchors() {
@@ -191,6 +295,7 @@
           button.style.position = "absolute";
           button.style.pointerEvents = "auto";
           button.style.transform = "translate(-50%, -50%)";
+          button.style.setProperty("--region-color", "#" + regionColors[anchor.region.id].getHexString());
           button.addEventListener("click", function(event) {
             event.stopPropagation();
             if (options.onPick) { options.onPick(anchor.region.id, anchor.side); }
@@ -288,7 +393,8 @@
         button.style.top = y.toFixed(1) + "px";
         button.className = "brain-label" + (active ? " is-selected" : "") +
           ((activities[anchor.region.id] || 0) > 0.15 ? " is-active" : "");
-        button.style.opacity = active ? "1" : String(Math.min(1, 0.5 + Math.max(0, facing) * 0.5));
+        button.style.opacity = active || (activities[anchor.region.id] || 0) >= 0.5 ? "1" :
+          String(Math.min(1, 0.5 + Math.max(0, facing) * 0.5));
       });
     }
 
@@ -443,13 +549,13 @@
         // Transparent black avoids adding a colored rectangle to the page.
         renderer.setClearColor(0x000000, 0);
         event.scene.children.forEach(function(child) {
-          if (child instanceof THREE.PointLight) { child.intensity = 0.46; }
+          if (child instanceof THREE.PointLight) { child.intensity = 0.3; }
         });
-        event.scene.add(new THREE.AmbientLight(0x40343a));
-        var key = new THREE.DirectionalLight(0xffe3d1, 0.43);
+        event.scene.add(new THREE.AmbientLight(0x666b76));
+        var key = new THREE.DirectionalLight(0xffffff, 0.55);
         key.position.set(-160, 230, 300);
         event.scene.add(key);
-        var rim = new THREE.DirectionalLight(0xc4ccd9, 0.25);
+        var rim = new THREE.DirectionalLight(0xe8efff, 0.22);
         rim.position.set(200, -40, -100);
         event.scene.add(rim);
         // SurfaceViewer emits draw after rendering; request the lighting pass.
@@ -472,11 +578,12 @@
         shape.position.sub(center);
         shape.material.color.setHex(0xffffff);
         shape.material.ambient.setHex(0xffffff);
-        shape.material.specular.setHex(0x30231e);
-        shape.material.shininess = 28;
+        shape.material.specular.setHex(0x161b24);
+        shape.material.shininess = 12;
       });
       colorBuffer = new Float32Array(atlas.length * 4);
       computeShading();
+      createHighlights();
       createAnchors();
       ready = true;
       resize();
@@ -522,7 +629,12 @@
       return {ready: ready, vertexCount: atlas ? atlas.length : 0,
         mappedAtlas: Object.keys(atlasRegions).map(Number), currentView: currentView,
         selected: selected, opacity: opacity, lobeMap: lobeMap, labels: labelsVisible,
-        activity: activities, anchorCount: anchors.length};
+        activity: activities, anchorCount: anchors.length,
+        highlights: highlightParts.map(function(part) {
+          return {id: part.id, side: part.side, color: "#" + regionColors[part.id].getHexString(),
+            visible: part.mesh.visible, opacity: part.mesh.material.opacity,
+            outlined: part.outline.visible, triangles: part.triangles};
+        })};
     };
     api.destroy = function() {
       destroyed = true;
@@ -537,6 +649,10 @@
       element.removeEventListener("pointerleave", pointerLeave);
       anchors.forEach(function(anchor) {
         if (anchor.element && anchor.element.parentNode) { anchor.element.parentNode.removeChild(anchor.element); }
+      });
+      highlightParts.forEach(function(part) {
+        part.mesh.geometry.dispose(); part.mesh.material.dispose();
+        part.outline.geometry.dispose(); part.outline.material.dispose();
       });
       if (viewer) {
         viewer.model.children.forEach(function(shape) {

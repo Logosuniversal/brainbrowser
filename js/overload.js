@@ -88,6 +88,10 @@
     if (!region) { return; }
     el("region-insight").hidden = false;
     el("overload-region-name").textContent = region.name + " · " + (side === "right" ? "右" : "左") + "半球";
+    el("overload-region-name").style.color = region.color;
+    Array.prototype.forEach.call(el("network-regions").children, function(control) {
+      control.setAttribute("aria-pressed", String(control.dataset.region === id));
+    });
     el("overload-region-description").textContent = region.description;
     el("overload-region-note").textContent = region.note;
     citations(el("overload-region-evidence"), region.evidence);
@@ -125,6 +129,8 @@
       highlight[id] = 0.72;
       var control = button(region.name, "region-chip", function() { selectRegion(id, "left"); });
       control.dataset.region = id;
+      control.style.setProperty("--region-color", region.color);
+      control.setAttribute("aria-pressed", "false");
       el("network-regions").appendChild(control);
     });
     if (renderer && ready) {
