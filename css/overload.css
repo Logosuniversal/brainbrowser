@@ -166,7 +166,8 @@ body.overload-app {
 .brain-label.is-selected,
 .brain-label[aria-pressed="true"] { z-index: 4; border-color: var(--accent-bright); box-shadow: 0 0 0 2px rgba(237, 177, 131, .17); }
 .brain-label::before { content: ""; display: inline-block; width: 7px; height: 7px; margin-right: 5px; border-radius: 50%; background: var(--region-color); }
-.brain-label.is-active { border-color: var(--region-color); background: rgba(14, 20, 32, .95); color: #fff; }
+.brain-label.is-active,
+.brain-label.is-revealed { border-color: var(--region-color); background: rgba(14, 20, 32, .95); color: #fff; }
 .brain-label.is-selected { border-color: #fff; box-shadow: 0 0 0 2px var(--region-color); }
 .stage-toolbar { position: absolute; z-index: 6; top: 14px; left: 12px; right: 12px; display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 5px; }
 .stage-toolbar button { min-height: 31px; padding: 4px 9px; border: 1px solid transparent; border-radius: 6px; background: rgba(26, 21, 33, .65); color: var(--muted); font-size: 10px; }

@@ -16,6 +16,7 @@
     regions: [
       {
         id: "visual",
+        interior: true,
         color: "#35b6ff",
         short: "Medial occipital",
         name: "枕叶内侧皮层",
@@ -86,6 +87,7 @@
       },
       {
         id: "parahippocampal",
+        interior: true,
         color: "#45df94",
         short: "PHG",
         name: "海马旁回",

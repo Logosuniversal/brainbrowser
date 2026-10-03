@@ -198,7 +198,8 @@ body.brainlight-app {
 .brain-label.is-active { border-color: var(--accent); color: #fff3e4; background: rgba(78, 48, 43, .90); z-index: 3; }
 .brain-label.is-selected { border-color: var(--accent-bright); box-shadow: 0 0 0 2px rgba(237, 177, 131, .14); }
 .brain-label::before { content: ""; display: inline-block; width: 7px; height: 7px; margin-right: 5px; border-radius: 50%; background: var(--region-color); }
-.brain-label.is-active { border-color: var(--region-color); background: rgba(14, 20, 32, .95); color: #fff; }
+.brain-label.is-active,
+.brain-label.is-revealed { border-color: var(--region-color); background: rgba(14, 20, 32, .95); color: #fff; }
 .brain-label.is-selected { border-color: #fff; box-shadow: 0 0 0 2px var(--region-color); }
 #brain-tooltip {
   position: absolute;

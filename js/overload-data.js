@@ -38,7 +38,7 @@
         evidence: ["corbetta2002", "aal2002"]
       },
       {
-        id: "acc", short: "前扣带", name: "前扣带及旁扣带皮层", color: "#45df94",
+        id: "acc", short: "前扣带", name: "前扣带及旁扣带皮层", color: "#45df94", interior: true,
         english: "Anterior cingulate & paracingulate gyri",
         lobe: "limbic", atlas: [31, 32], view: "front",
         description: "前扣带皮层的部分区域与表现监控及控制分配有关。“控制的期望价值”理论强调收益、代价和控制需求的综合评估。",
@@ -47,7 +47,7 @@
         evidence: ["shenhav2013", "aal2002"]
       },
       {
-        id: "insula", short: "岛叶", name: "岛叶（前岛叶的解剖背景）", color: "#cb73ff",
+        id: "insula", short: "岛叶", name: "岛叶（前岛叶的解剖背景）", color: "#cb73ff", interior: true,
         english: "Insula; anatomical context for the anterior insula",
         lobe: "insula", atlas: [29, 30], view: "left",
         description: "前岛叶与显著性网络及内感受有关，有研究模型提出它参与识别显著事件和协调网络间的状态变化。",

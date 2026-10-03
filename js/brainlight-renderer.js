@@ -111,8 +111,7 @@
         value = Math.round(atlas[i]);
         region = atlasRegions[value];
         color = lobeMap ? colorForAtlas(value) : base;
-        // Keep region identities visible in the context surface. Bright teaching
-        // highlights use separate meshes so cortex opacity cannot wash them out.
+        // Keep region identities visible in the anatomical context surface.
         amount = region && !lobeMap ? (selected ? 0.12 : 0.34) : 0;
         strength = shade[i];
         var tint = region ? regionColors[region.id] : base;
@@ -141,17 +140,35 @@
       viewer.updated = true;
     }
 
+    function interiorRevealed(id, side) {
+      return opacity < 0.55 && regions[id].interior &&
+        (!selected || !regions[selected.id].interior ||
+          selected.id === id && (!selected.side || selected.side === side));
+    }
+
     function updateHighlights() {
       highlightParts.forEach(function(part) {
         var focused = selected && selected.id === part.id && (!selected.side || selected.side === part.side);
         var amount = Math.max(0, Math.min(1, activities[part.id] || 0));
         if (selected) { amount = focused ? 1 : 0; }
+        var interior = !!regions[part.id].interior;
+        var revealed = interiorRevealed(part.id, part.side);
+        // Transparency is an anatomical exploration mode: reveal labeled inner
+        // cortex even when it is not part of the current teaching mechanism.
+        if (revealed) { amount = Math.max(amount, 0.65); }
         part.mesh.visible = amount > 0.01;
-        // Completed steps remain quiet; the current region is almost opaque,
-        // regardless of the surrounding cortex's transparency setting.
-        part.mesh.material.opacity = amount >= 0.5 ? 0.99 : 0.38;
-        part.mesh.material.depthWrite = amount >= 0.5;
+        var strength = amount >= 0.5 ? 0.99 : 0.38;
+        // Outer colored patches and outlines must fade with the cortex too;
+        // otherwise they form an opaque shell over the insula and medial cortex.
+        // Multiple folded surface layers overlap in x-ray views. Fade the color
+        // overlay more strongly so their combined alpha does not hide the inside.
+        var outerOpacity = opacity * opacity;
+        part.mesh.material.opacity = strength * (interior ? 1 : outerOpacity);
+        part.mesh.material.depthWrite = amount >= 0.5 && (interior || opacity >= 0.98);
+        part.mesh.renderDepth = interior ? -100 : -50;
         part.outline.visible = amount >= 0.5;
+        part.outline.material.opacity = 0.86 * (interior ? 1 : outerOpacity);
+        part.outline.renderDepth = interior ? -101 : -51;
       });
     }
 
@@ -219,7 +236,7 @@
           if (!normals) { geometry.computeVertexNormals(); }
           var material = new THREE.MeshPhongMaterial({color: 0xffffff, ambient: 0xffffff,
             emissive: 0x242424, specular: 0x161b24, shininess: 12,
-            vertexColors: THREE.VertexColors, side: THREE.DoubleSide,
+            vertexColors: THREE.VertexColors, side: regions[group.id].interior ? THREE.DoubleSide : THREE.FrontSide,
             transparent: true, opacity: 0.99, depthWrite: true,
             polygonOffset: true, polygonOffsetFactor: -1, polygonOffsetUnits: -1});
           var mesh = new THREE.Mesh(geometry, material);
@@ -321,8 +338,10 @@
         ":" + camera.position.x + ":" + camera.position.y + ":" + camera.position.z +
         ":" + width + ":" + height + ":" + opacity + ":" + labelsVisible;
       var ordered = anchors.slice().sort(function(a, b) {
-        var av = selected && a.region.id === selected.id ? 3 : activities[a.region.id] || 0;
-        var bv = selected && b.region.id === selected.id ? 3 : activities[b.region.id] || 0;
+        var av = selected && a.region.id === selected.id ? 3 :
+          (interiorRevealed(a.region.id, a.side) ? 2 : activities[a.region.id] || 0);
+        var bv = selected && b.region.id === selected.id ? 3 :
+          (interiorRevealed(b.region.id, b.side) ? 2 : activities[b.region.id] || 0);
         return bv - av;
       });
       ordered.forEach(function(anchor) {
@@ -392,9 +411,11 @@
         button.style.left = x.toFixed(1) + "px";
         button.style.top = y.toFixed(1) + "px";
         button.className = "brain-label" + (active ? " is-selected" : "") +
-          ((activities[anchor.region.id] || 0) > 0.15 ? " is-active" : "");
-        button.style.opacity = active || (activities[anchor.region.id] || 0) >= 0.5 ? "1" :
-          String(Math.min(1, 0.5 + Math.max(0, facing) * 0.5));
+          ((activities[anchor.region.id] || 0) > 0.15 ? " is-active" : "") +
+          (interiorRevealed(anchor.region.id, anchor.side) ? " is-revealed" : "");
+        button.style.opacity = active || interiorRevealed(anchor.region.id, anchor.side) ? "1" :
+          (opacity < 0.55 ? "0.4" : (activities[anchor.region.id] || 0) >= 0.5 ? "1" :
+            String(Math.min(1, 0.5 + Math.max(0, facing) * 0.5)));
       });
     }
 
@@ -436,6 +457,7 @@
         shape.material.transparent = opacity < 1;
         shape.material.depthWrite = opacity >= 0.98;
       });
+      updateHighlights();
       viewer.updated = true;
     }
 
@@ -633,7 +655,9 @@
         highlights: highlightParts.map(function(part) {
           return {id: part.id, side: part.side, color: "#" + regionColors[part.id].getHexString(),
             visible: part.mesh.visible, opacity: part.mesh.material.opacity,
-            outlined: part.outline.visible, triangles: part.triangles};
+            outlined: part.outline.visible, triangles: part.triangles,
+            interior: !!regions[part.id].interior, revealed: !!interiorRevealed(part.id, part.side),
+            depthWrite: part.mesh.material.depthWrite, outlineOpacity: part.outline.material.opacity};
         })};
     };
     api.destroy = function() {

@@ -80,6 +80,9 @@
     transparent = value;
     el("overload-inside").setAttribute("aria-checked", String(transparent));
     el("overload-inside").textContent = transparent ? "恢复表面" : "透视皮层";
+    el("stage-display-note").textContent = transparent ?
+      "透视解剖：表面色块已淡化，内部皮层保持清晰" :
+      "色标对应脑区；亮色与轮廓表示当前讲解范围";
     if (renderer) { renderer.setOpacity(transparent ? 0.26 : 1); }
   }
 
