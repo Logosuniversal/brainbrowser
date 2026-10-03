@@ -114,7 +114,8 @@
     el("mechanism-number").textContent = "机制 0" + (index + 1) + " / 05";
     el("mechanism-title").textContent = active_mechanism.title;
     el("mechanism-detail").setAttribute("aria-labelledby", "mechanism-tab-" + active_mechanism.id);
-    el("mechanism-summary").textContent = active_mechanism.summary;
+    el("mechanism-summary").textContent = active_mechanism.summary || "";
+    el("mechanism-summary").hidden = !active_mechanism.summary;
     clear(el("mechanism-body"));
     var paragraphs = Array.isArray(active_mechanism.body) ? active_mechanism.body : [active_mechanism.body];
     paragraphs.forEach(function(paragraph) { el("mechanism-body").appendChild(text("p", paragraph)); });
@@ -149,7 +150,7 @@
     control.setAttribute("aria-controls", "mechanism-detail");
     control.appendChild(text("span", "0" + (index + 1), "step-index"));
     control.appendChild(text("strong", mechanism.title));
-    control.appendChild(text("small", mechanism.summary));
+    if (mechanism.summary) { control.appendChild(text("small", mechanism.summary)); }
     el("mechanism-tabs").appendChild(control);
   });
   el("mechanism-tabs").addEventListener("keydown", function(event) {

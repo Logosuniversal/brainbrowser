@@ -78,7 +78,6 @@
     mechanisms: [
       {
         id: "competition", title: "注意是一场有偏向的竞争",
-        summary: "屏幕上出现的信息，都可能争夺选择机会；目标帮助我们决定优先处理什么。",
         body: "视觉刺激之间会竞争有限的加工资源。外侧前额叶与顶叶等区域共同维持目标并调节注意；醒目的无关内容也可能吸引选择。信息越多不代表必然过载，关键还包括相关性、复杂度、时间压力和任务目标。",
         regions: ["visual", "lateral-pfc", "parietal"],
         evidence: ["desimone1995", "miller2001", "corbetta2002", "eppler2004"],
